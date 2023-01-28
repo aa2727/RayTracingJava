@@ -260,7 +260,7 @@ public class Camera{
                 }
                 // 
                 if (!isInShadow){
-                    Ray normale = nearestTri.getNormal();
+                    //Ray normale = nearestTri.getNormal();
                     //this.pixels[i][j] = lightRay.reflectedLight(rayon,normale,nearestTri).toColor(); If the impact point was correct we could use reflected light to compute the true color
                     if (nearestTri.isOnEdge(nearestImpact)){
                         this.pixels[i][j] = nearestTri.getSegmentColor();

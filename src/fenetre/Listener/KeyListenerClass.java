@@ -2,8 +2,6 @@ package fenetre.Listener;
 
 import Scene.Scene;
 import fenetre.*;
-
-import javax.swing.*;
 import java.awt.event.*;
 
 public class KeyListenerClass implements KeyListener{

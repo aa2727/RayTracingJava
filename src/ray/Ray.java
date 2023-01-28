@@ -184,6 +184,6 @@ public class Ray {
      * @param args
      */
     public static void main(String[] args) {
-        Ray ray = new Ray(new Vector3D(-1, -20, 0), new Vector3D(0, 0, 0));
+        new Ray(new Vector3D(-1, -20, 0), new Vector3D(0, 0, 0));
     }
 }

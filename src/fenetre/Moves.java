@@ -1,12 +1,7 @@
 package fenetre;
 
 import ray.*;
-import javax.swing.*;
-
 import Scene.camera.*;
-import fenetre.AfficheImage;
-import java.awt.*; 
-
 
 //Every method in this class modify the position of the camera depending on what key is pressed
 public class Moves{

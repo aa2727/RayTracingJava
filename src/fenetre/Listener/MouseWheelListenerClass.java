@@ -2,9 +2,6 @@ package fenetre.Listener;
 
 import Scene.Scene;
 import fenetre.*;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class MouseWheelListenerClass implements MouseWheelListener{
