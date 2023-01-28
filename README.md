@@ -1,6 +1,8 @@
 # Moteur 3D par lancé de rayon
 
-|Nom|Prenom|NumEtu|
-|-|-|
-|LEMONNIER|Guillaume|22007629|
-|LEMAITRE|Antoine|22005471|
+|Nom|Prenom|Github|
+|-|-|-|
+|LEMAITRE|Antoine|github.com/aa2727|
+|LEMONNIER|Guillaume|github.com/P-Pix|
+|VIVIEN|Logan|github.com/LoganVivien|
+|KOBYLT|Harrisson|github.com/HarryyKk|
