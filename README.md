@@ -1,4 +1,4 @@
-# Moteur 3D par lancé de rayon
+# Moteur 3D par lancer de rayon
 
 |Nom|Prenom|Github|
 |-|-|-|
