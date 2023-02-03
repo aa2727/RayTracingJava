@@ -27,24 +27,18 @@ public class Parser {
      */
     public Scene scanFile() {
         Scene scene = null;
-
         try {
             File file = new File(this.filePath);
             Scanner scan = new Scanner(file);
-
-            ArrayList<String> lignes = new ArrayList<String>();
-            while (scan.hasNext()) {
-                String tmp = scan.nextLine();
-                lignes.add(tmp);
-            }
+            ArrayList<String> lignes = getLinesFromFile(scan);
+            scan.close();
             if(!lignes.get(0).equals("{") || !lignes.get(lignes.size() -1).equals("}")){
-                scan.close();
-                System.err.println("29");
-                throw new FileException("Le format du fichier n'est pas bon: les parametres doivent être entre accolades");
+                throw new FileException("Le format du fichier n'est pas bon : les paramètres doivent être entre accolades");
             }
-            System.out.println(lignes.get(lignes.size()-1));
+
             lignes.remove(lignes.get(0));
             lignes.remove(lignes.get(lignes.size() - 1));
+
             ArrayList<String[]> lineParam = new ArrayList<String[]>();
             for (int i = 0; i < lignes.size(); i++) {
                 lineParam.add((lignes.get(i).split("/")));
@@ -54,7 +48,6 @@ public class Parser {
             } catch(FileException e){
                 e.printStackTrace();
             }
-            scan.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -64,26 +57,54 @@ public class Parser {
         return scene;
     }
 
+    /**
+     * Function that returns a list of lines from the file in the Scanner scan
+     * @param scan Scanner with the file to study
+     * @return List of String line
+     */
+    public ArrayList<String> getLinesFromFile(Scanner scan){
+        ArrayList<String> lignes = new ArrayList<String>();
+        while (scan.hasNext()) {
+            String tmp = scan.nextLine();
+            lignes.add(tmp);
+        }
+        return lignes;
+    }
+
+    /**
+     * Function which add a cube to the given scene with the given parameters in line
+     * @param scene Scene which we want to add the cube
+     * @param line List of String in which the parameters are given
+     */
+    public void addCube(Scene scene, String[]line) {
+        if(line[1] !=null){
+            Cube cubique = new Cube(Integer.parseInt(line[1]),
+            Integer.parseInt(line[2]), Integer.parseInt(line[3]),Integer.parseInt(line[4]));
+            scene.addObject2Scene(cubique);
+        }
+        else{
+            Cube cubique = new Cube();
+            scene.addObject2Scene(cubique);
+        }
+    }
+
+    public void addParallelepiped(Scene scene, String[]line) {
+        Parallelepiped para = new Parallelepiped(Integer.parseInt(line[1]),
+        Integer.parseInt(line[2]), Integer.parseInt(line[3]),Integer.parseInt(line[4]),
+        Integer.parseInt(line[5]),Integer.parseInt(line[6]));
+        scene.addObject2Scene(para);
+    }
+
     public Scene listeString2Scene(ArrayList<String[]> lineParam) throws FileException {
-            Scene param = new Scene();
+            Scene scene = new Scene();
             for (int i = 0; i < lineParam.size(); i++) {
                 String type = lineParam.get(i)[0];
                 switch (type) {
                     case "Cube":
-                        if(lineParam.get(i)[1] !=null){
-                            Cube cubique = new Cube(Integer.parseInt(lineParam.get(i)[1]),
-                            Integer.parseInt(lineParam.get(i)[2]), Integer.parseInt(lineParam.get(i)[3]),Integer.parseInt(lineParam.get(i)[4]));
-                            param.addObject2Scene(cubique);
-                        }
-                        else{
-                            Cube cubique = new Cube();
-                            param.addObject2Scene(cubique);
-                        }
+                        addCube(scene, lineParam.get(i));
                         break;
                     case "Parallelepiped":
-                        Parallelepiped para = new Parallelepiped(Integer.parseInt(lineParam.get(i)[1]),
-                                Integer.parseInt(lineParam.get(i)[2]), Integer.parseInt(lineParam.get(i)[3]),Integer.parseInt(lineParam.get(i)[4]),Integer.parseInt(lineParam.get(i)[5]),Integer.parseInt(lineParam.get(i)[6]));
-                        param.addObject2Scene(para);
+                        addParallelepiped(scene, lineParam.get(i));
                         break;
                     case "Light":
                         ArrayList<String> container = new ArrayList<String>();
@@ -99,7 +120,7 @@ public class Parser {
                         Shade.light.PixelColor c2 = new Shade.light.PixelColor(Integer.parseInt(container.get(3)),Integer.parseInt(container.get(4)),Integer.parseInt(container.get(5)));
                         Shade.light.PixelColor c3 = new Shade.light.PixelColor(Integer.parseInt(container.get(6)),Integer.parseInt(container.get(7)),Integer.parseInt(container.get(8)));
                         Light lux = new Shade.light.Light(c1,c2,c3);
-                        param.setLight(lux);
+                        scene.setLight(lux);
                         break;
 
                     case "Camera":
@@ -116,7 +137,7 @@ public class Parser {
                         ray.Vector3D v2 = new ray.Vector3D(Integer.parseInt(container2.get(3)),Integer.parseInt(container2.get(4)),Integer.parseInt(container2.get(5)));
                         ray.Vector3D v3 = new ray.Vector3D(Integer.parseInt(container2.get(6)),Integer.parseInt(container2.get(7)),Integer.parseInt(container2.get(8)));
                         Camera cam = new Camera(v1,v2,v3,Integer.parseInt(lineParam.get(i)[4]),Integer.parseInt(lineParam.get(i)[5]));
-                        param.setCamera(cam);
+                        scene.setCamera(cam);
                         break;
 
                     default:
@@ -124,6 +145,6 @@ public class Parser {
                         throw new FileException("Une des lignes du fichier est invalide");
                 }
             }
-            return param;
+            return scene;
         } 
 }
