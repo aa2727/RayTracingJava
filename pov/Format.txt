@@ -1,0 +1,5 @@
+Un fichier .scene doit s'écrire ainsi :
+
+Avoir une accolade ouvrante puis un retour à la ligne
+Une ligne par élément dont les paramètres sont notés dans template séparés par des /
+Avoir une accolade fermante

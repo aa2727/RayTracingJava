@@ -16,9 +16,9 @@ public class Parser {
         this.filePath = filePath;
     }
 
-    // If no file is given we take Default.txt as a demo file
+    // If no file is given we take Test.scene as a demo file
     public Parser() {
-        this.filePath = "Default.txt";
+        this.filePath = "Test.scene";
     }
 
     /**
