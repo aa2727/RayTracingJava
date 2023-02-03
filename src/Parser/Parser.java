@@ -5,29 +5,33 @@ import java.util.Scanner;
 import Scene.*;
 import Scene.camera.Camera;
 import Shade.light.Light;
-
 import java.util.ArrayList;
 import object3D.*;
 
 public class Parser {
-    private String fichier;
+    private String filePath;
 
-    //Attribution du fichier.txt au Parser
-    public Parser(String fichier) {
-        this.fichier = fichier;
+    // The parser is created and linked to a file
+    public Parser(String filePath) {
+        this.filePath = filePath;
     }
 
-    //Si aucun fichier n'a été choisi, utilise par défaut un fichier nommé Default
+    // If no file is given we take Default.txt as a demo file
     public Parser() {
-        this.fichier = "Default.txt";
+        this.filePath = "Default.txt";
     }
 
+    /**
+     * Read the file which its path is stored in this.filePath
+     * @return a Scene Object described in the file or null if the file is not correct
+     */
     public Scene scanFile() {
         Scene scene = null;
-        //Le try est utilsé pour renvoyer des exceptions lors de rencontre d'erreurs.
+
         try {
-            File file = new File(this.fichier);
+            File file = new File(this.filePath);
             Scanner scan = new Scanner(file);
+
             ArrayList<String> lignes = new ArrayList<String>();
             while (scan.hasNext()) {
                 String tmp = scan.nextLine();
@@ -45,15 +49,6 @@ public class Parser {
             for (int i = 0; i < lignes.size(); i++) {
                 lineParam.add((lignes.get(i).split("/")));
             }
-            /*
-             * Affichage de tout les éléments singuliers du fichier
-             * for (int j = 0; j < res.size(); j++) {
-             * for (int k = 0; k < res.get(j).length; k++) {
-             * System.out.println("\n\n" + res.get(j)[k]);
-             * }
-             * }
-             */
-            
             try{
                 scene = listeString2Scene(lineParam);
             } catch(FileException e){
@@ -129,17 +124,6 @@ public class Parser {
                         throw new FileException("Une des lignes du fichier est invalide");
                 }
             }
-            
             return param;
         } 
-
-    public static void main(String[] args) {
-        Parser test = new Parser("Test.txt");
-        test.scanFile();
-
-    }
-    /* SCANNER -> couper plusieurs fois */
-    // public boolean ParseFile /* Vérifie que le ficier est valide et instance le
-    // protocole de parcours + création de la figure , renvoie true si le ficher ne
-    // comporte pas d'erreur, false sinon*/
 }

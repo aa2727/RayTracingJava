@@ -49,7 +49,7 @@ public class MainPane extends JPanel{
         //Just connecting the different class related to movements and menu options
         this.addKeyListener(new KeyListenerClass(this));
         this.addMouseWheelListener(new MouseWheelListenerClass(this));
-        this.shortCuts.addActionListener(new AideListener(this.shortCuts));
+        this.shortCuts.addActionListener(new AideListener());
         this.open.addActionListener(new FileOpener(this.open,this));
 
 

@@ -6,19 +6,14 @@ import Scene.camera.*;
 //Every method in this class modify the position of the camera depending on what key is pressed
 public class Moves{
 
-
-    public Moves(){};
-
-
     /**
      * Modify Y to change camera's position, here the camera goes up
      * @param camera Camera
      */
     public static void up(Camera camera){
-        Vector3D position = camera.getPosition();       //"Collect" the position of the camera         
-        position.setY(position.getY() -1);              // and modify the choosen coordinates
+        Vector3D position = camera.getPosition();       //"Get the position of the camera         
+        position.setY(position.getY() -1);              // and modify the choosen coordinate
     }
-
 
     /**
      * Modify Y to change camera's position, here the camera down up
@@ -29,30 +24,25 @@ public class Moves{
         position.setY(position.getY() +1);
     }    
 
-    
     public static void left(Camera camera){
         Vector3D position = camera.getPosition();
         position.setX(position.getX() -1);
     }
-
 
     public static void right(Camera camera){
         Vector3D position = camera.getPosition();
         position.setX(position.getX() +1);
     }
 
-
     public static void forward(Camera camera){
         Vector3D position = camera.getPosition();
         position.setZ(position.getZ() -1);
     }
 
-
     public static void backward(Camera camera){
         Vector3D position = camera.getPosition();
         position.setZ(position.getZ() +1);
     }
-
 
     public static void roundLeft(Camera camera){
         Vector3D orientation = camera.getOrientation();
