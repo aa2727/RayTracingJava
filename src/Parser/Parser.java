@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Scanner;
 import Scene.*;
 import Scene.camera.Camera;
-import Shade.light.Light;
+import Shade.light.*;
 import java.util.ArrayList;
 import object3D.*;
 
@@ -62,7 +62,7 @@ public class Parser {
      * @param scan Scanner with the file to study
      * @return List of String line
      */
-    public ArrayList<String> getLinesFromFile(Scanner scan){
+    private ArrayList<String> getLinesFromFile(Scanner scan){
         ArrayList<String> lignes = new ArrayList<String>();
         while (scan.hasNext()) {
             String tmp = scan.nextLine();
@@ -76,25 +76,81 @@ public class Parser {
      * @param scene Scene which we want to add the cube
      * @param line List of String in which the parameters are given
      */
-    public void addCube(Scene scene, String[]line) {
+    private void addCube(Scene scene, String[]line) {
+        Cube cubique = null;
         if(line[1] !=null){
-            Cube cubique = new Cube(Integer.parseInt(line[1]),
+            cubique = new Cube(Integer.parseInt(line[1]),
             Integer.parseInt(line[2]), Integer.parseInt(line[3]),Integer.parseInt(line[4]));
-            scene.addObject2Scene(cubique);
         }
         else{
-            Cube cubique = new Cube();
-            scene.addObject2Scene(cubique);
+            cubique = new Cube();
         }
+        scene.addObject2Scene(cubique);
     }
 
-    public void addParallelepiped(Scene scene, String[]line) {
-        Parallelepiped para = new Parallelepiped(Integer.parseInt(line[1]),
+    /**
+     * Function which add a parallelepiped to the given scene with the given parameters in line
+     * @param scene Scene which we want to add the parallelepiped
+     * @param line List of String in which the parameters are given
+     */
+    private void addParallelepiped(Scene scene, String[]line) {
+        Parallelepiped para = null;
+        if(line[1] !=null){
+        para = new Parallelepiped(Integer.parseInt(line[1]),
         Integer.parseInt(line[2]), Integer.parseInt(line[3]),Integer.parseInt(line[4]),
         Integer.parseInt(line[5]),Integer.parseInt(line[6]));
+        }
+        else{
+            para = new Parallelepiped();
+        }
         scene.addObject2Scene(para);
     }
 
+    /**
+     * Function which add a light to the given scene with the given parameters in line
+     * @param scene Scene which we want to add the light
+     * @param line List of String in which the parameters are given
+     */
+    private void addLight(Scene scene, String[]line) {
+        PixelColor[] composantes = new PixelColor[3];
+        for(int i = 1; i < 4; i++){
+            String textComposante = line[i];
+            textComposante = textComposante.substring(1, textComposante.length() - 1); // We delete the parenthesis
+            String[] elementComposante = textComposante.split(","); // We cut the tuple into 3 Strings
+            composantes[i-1] = new PixelColor(Integer.parseInt(elementComposante[0]),Integer.parseInt(elementComposante[1]),Integer.parseInt(elementComposante[2]));
+        }
+        Light lux = new Light(composantes[0],composantes[1],composantes[2]);
+        scene.setLight(lux);
+    }
+
+    /**
+     * Function which set a camera to the given scene with the given parameters in line
+     * @param scene Scene which we want to set the camera
+     * @param line List of String in which the parameters are given
+     */
+    private void addCamera(Scene scene,String[]line) {
+        ArrayList<String> container2 = new ArrayList<String>();
+        for(int j=1; j < 4;j++){
+            String tmp = line[j];
+            tmp= tmp.substring(1, tmp.length() - 1);
+            String[] ltmp =tmp.split(",");
+            for(int k=0;k<ltmp.length;k++){
+                container2.add(ltmp[k]);
+            }
+        }
+                        ray.Vector3D v1 = new ray.Vector3D(Integer.parseInt(container2.get(0)),Integer.parseInt(container2.get(1)),Integer.parseInt(container2.get(2)));
+                        ray.Vector3D v2 = new ray.Vector3D(Integer.parseInt(container2.get(3)),Integer.parseInt(container2.get(4)),Integer.parseInt(container2.get(5)));
+                        ray.Vector3D v3 = new ray.Vector3D(Integer.parseInt(container2.get(6)),Integer.parseInt(container2.get(7)),Integer.parseInt(container2.get(8)));
+        Camera cam = new Camera(v1,v2,v3,Integer.parseInt(line[4]),Integer.parseInt(line[5]));
+        scene.setCamera(cam);
+    }
+
+    /**
+     * Function that takes a array of list of Strings containing the elements of the scene in the document
+     * @param lineParam array of list of Strings with the elements and their parameters
+     * @return a Scene object described in the lineParam parameter
+     * @throws FileException if the name of one of the object is wrong in the strings
+     */
     public Scene listeString2Scene(ArrayList<String[]> lineParam) throws FileException {
             Scene scene = new Scene();
             for (int i = 0; i < lineParam.size(); i++) {
@@ -107,39 +163,11 @@ public class Parser {
                         addParallelepiped(scene, lineParam.get(i));
                         break;
                     case "Light":
-                        ArrayList<String> container = new ArrayList<String>();
-                        for(int j=1; j < 4;j++){
-                            String tmp = lineParam.get(i)[j];
-                            tmp= tmp.substring(1, tmp.length() - 1);
-                            String[] ltmp =tmp.split(",");
-                            for(int k=0;k<ltmp.length;k++){
-                                container.add(ltmp[k]);
-                            }
-                        }
-                        Shade.light.PixelColor c1 = new Shade.light.PixelColor(Integer.parseInt(container.get(0)),Integer.parseInt(container.get(1)),Integer.parseInt(container.get(2)));
-                        Shade.light.PixelColor c2 = new Shade.light.PixelColor(Integer.parseInt(container.get(3)),Integer.parseInt(container.get(4)),Integer.parseInt(container.get(5)));
-                        Shade.light.PixelColor c3 = new Shade.light.PixelColor(Integer.parseInt(container.get(6)),Integer.parseInt(container.get(7)),Integer.parseInt(container.get(8)));
-                        Light lux = new Shade.light.Light(c1,c2,c3);
-                        scene.setLight(lux);
+                        addLight(scene, lineParam.get(i));
                         break;
-
                     case "Camera":
-                    ArrayList<String> container2 = new ArrayList<String>();
-                        for(int j=1; j < 4;j++){
-                            String tmp = lineParam.get(i)[j];
-                            tmp= tmp.substring(1, tmp.length() - 1);
-                            String[] ltmp =tmp.split(",");
-                            for(int k=0;k<ltmp.length;k++){
-                                container2.add(ltmp[k]);
-                            }
-                        }
-                        ray.Vector3D v1 = new ray.Vector3D(Integer.parseInt(container2.get(0)),Integer.parseInt(container2.get(1)),Integer.parseInt(container2.get(2)));
-                        ray.Vector3D v2 = new ray.Vector3D(Integer.parseInt(container2.get(3)),Integer.parseInt(container2.get(4)),Integer.parseInt(container2.get(5)));
-                        ray.Vector3D v3 = new ray.Vector3D(Integer.parseInt(container2.get(6)),Integer.parseInt(container2.get(7)),Integer.parseInt(container2.get(8)));
-                        Camera cam = new Camera(v1,v2,v3,Integer.parseInt(lineParam.get(i)[4]),Integer.parseInt(lineParam.get(i)[5]));
-                        scene.setCamera(cam);
+                        addCamera(scene, lineParam.get(i));
                         break;
-
                     default:
                         System.out.println("Ligne invalide");
                         throw new FileException("Une des lignes du fichier est invalide");
