@@ -7,6 +7,7 @@ import Scene.camera.Camera;
 import Shade.light.*;
 import java.util.ArrayList;
 import object3D.*;
+import ray.*;
 
 public class Parser {
     private String filePath;
@@ -113,6 +114,7 @@ public class Parser {
      */
     private void addLight(Scene scene, String[]line) {
         PixelColor[] composantes = new PixelColor[3];
+
         for(int i = 1; i < 4; i++){
             String textComposante = line[i];
             textComposante = textComposante.substring(1, textComposante.length() - 1); // We delete the parenthesis
@@ -129,19 +131,15 @@ public class Parser {
      * @param line List of String in which the parameters are given
      */
     private void addCamera(Scene scene,String[]line) {
-        ArrayList<String> container2 = new ArrayList<String>();
-        for(int j=1; j < 4;j++){
-            String tmp = line[j];
-            tmp= tmp.substring(1, tmp.length() - 1);
-            String[] ltmp =tmp.split(",");
-            for(int k=0;k<ltmp.length;k++){
-                container2.add(ltmp[k]);
-            }
+        Vector3D[] axis = new Vector3D[3];
+
+        for(int i = 1; i < 4; i++){
+            String texteAxe = line[i];
+            texteAxe = texteAxe.substring(1, texteAxe.length() - 1);
+            String[] elementAxe =texteAxe.split(",");
+            axis[i-1] = new Vector3D(Integer.parseInt(elementAxe[0]),Integer.parseInt(elementAxe[1]),Integer.parseInt(elementAxe[2]));
         }
-                        ray.Vector3D v1 = new ray.Vector3D(Integer.parseInt(container2.get(0)),Integer.parseInt(container2.get(1)),Integer.parseInt(container2.get(2)));
-                        ray.Vector3D v2 = new ray.Vector3D(Integer.parseInt(container2.get(3)),Integer.parseInt(container2.get(4)),Integer.parseInt(container2.get(5)));
-                        ray.Vector3D v3 = new ray.Vector3D(Integer.parseInt(container2.get(6)),Integer.parseInt(container2.get(7)),Integer.parseInt(container2.get(8)));
-        Camera cam = new Camera(v1,v2,v3,Integer.parseInt(line[4]),Integer.parseInt(line[5]));
+        Camera cam = new Camera(axis[0],axis[1],axis[2],Integer.parseInt(line[4]),Integer.parseInt(line[5]));
         scene.setCamera(cam);
     }
 
