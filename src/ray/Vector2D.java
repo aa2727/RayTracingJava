@@ -100,6 +100,32 @@ public class Vector2D {
         this.setY(this.getY() + y);
     }
 
+        /**
+     * Soustrait les coordonnées du Vector 2D avec celui passé en paramètre
+     * @param v Vector2D
+     * @requires v != null
+     * @ensure x = x - v.x
+     * @ensure y = y - v.y
+     */
+    public void sub(Vector2D v) {
+        if (v == null) {
+            throw new IllegalArgumentException("Vector2D.sub: v is null");
+        }
+        this.sub(v.getX(), v.getY());
+    }
+
+    /**
+     * Soustrait les coordonnées du Vector 2D avec les coordonnées x,y passées en paramètre
+     * @param x double
+     * @param y double
+     * @ensure x = x - x
+     * @ensure y = y - y
+     */
+    public void sub(double x, double y) {
+        this.setX(this.getX() - x);
+        this.setY(this.getY() - y);
+    }
+
     /**
      * Multiplie les coordonnées du Vector 2D avec les coordonnées x,y passées en paramètre
      * @ensure this.x *= x

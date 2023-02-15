@@ -30,7 +30,7 @@ public class Triangle extends Material{
         this.setVertexB(vectB);
         this.setVertexC(vectC);
         this.passageMatrix2Canonical = new double[3][3];
-        this.setNormal(new Ray(vectA, Ray.normal(vectC.sub(vectA), vectB.sub(vectA))));
+        this.setNormal();
     }
 
     /**
@@ -136,9 +136,9 @@ public class Triangle extends Material{
 
     /**
      * Set the Normal Ray
-     * @param ray the Normal Ray
      */
-    public void setNormal(Ray ray) {
+    private void setNormal() {
+        Ray ray = new Ray(this.vertexA, Ray.normal(Vector3D.substract(vertexC, vertexA), Vector3D.substract(vertexB, vertexA)));
         this.normal = ray;
     }
 

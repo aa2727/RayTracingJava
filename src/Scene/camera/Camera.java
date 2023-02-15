@@ -9,6 +9,8 @@ import java.util.*;
 public class Camera{
     private Vector3D position;
     private Vector3D orientation;
+    private Vector3D upOrientation;
+    private Vector3D sideOrientation;
     private Vector3D lightPosition;
     private double angle;
     private double[][] rotationMatrix;
@@ -27,6 +29,8 @@ public class Camera{
         this.imageWidth = width;
         this.setAngleRotation();
         this.setRotationMatrix();
+        this.setUpOrientation();
+        this.setSideOrientation();
     }
 
     public Camera() {
@@ -43,6 +47,22 @@ public class Camera{
 
     public Vector3D getOrientation() {
         return this.orientation;
+    } 
+
+    public Vector3D getUpOrientation() {
+        return this.upOrientation;
+    }
+
+    private void setUpOrientation() {
+        this.upOrientation =  getRotatedVector3D(new Vector3D(0,-1,0));
+    }
+
+    public Vector3D getSideOrientation() {
+        return this.sideOrientation;
+    }
+
+    private void setSideOrientation() {
+        this.sideOrientation =  getRotatedVector3D(new Vector3D(1,0,0));
     }
 
     /**
@@ -53,6 +73,8 @@ public class Camera{
         this.orientation = orientation;
         this.setAngleRotation();
         this.setRotationMatrix();
+        this.setUpOrientation();
+        this.setSideOrientation();
     }
     @Override
     public String toString() {

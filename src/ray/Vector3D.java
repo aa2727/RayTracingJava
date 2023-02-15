@@ -97,6 +97,15 @@ public class Vector3D extends Vector2D {
     }
 
     /**
+     * Create a normalized version of the vector
+     * @return the Vector3D normalized
+     */
+    public Vector3D normalize(){
+        double norm = this.norm();
+        return new Vector3D(this.getX()/norm,this.getY()/norm,this.getZ()/norm);
+    }
+
+    /**
      * Add the given vector to this vector.
      * 
      * @param v Vector3D to copy
@@ -128,12 +137,26 @@ public class Vector3D extends Vector2D {
      * @param v Vector3D to substract
      * @return the substracted vector
      */
-    public Vector3D sub(Vector3D v) {
+    public void sub(Vector3D v) {
         if (v == null) {
             throw new IllegalArgumentException("Vector3D.sub: v is null");
         }
-        return new Vector3D(this.getX() - v.getX(), this.getY() - v.getY(), this.getZ() - v.getZ());
+        this.sub(v.getX(), v.getY(), v.getZ());
     }
+
+    /**
+     * Substract the given value to the vector
+     * 
+     * @param x double
+     * @param y double
+     * @param z double
+     * @ensure x = x - x and y = y - y and z = z - z
+     */
+    public void sub(double x, double y, double z) {
+        super.sub(x, y);
+        this.setZ(this.getZ() - z);
+    }
+
 
     /**
      * Get the middle of two vectors
@@ -181,6 +204,10 @@ public class Vector3D extends Vector2D {
      */
     public static double scalarProduct(Vector3D firstVector3D,Vector3D secondVector3D){
         return firstVector3D.getX()*secondVector3D.getX()+firstVector3D.getY()*secondVector3D.getY()+firstVector3D.getZ()*secondVector3D.getZ();
+    }
+
+    public static Vector3D substract(Vector3D v, Vector3D u) {
+        return new Vector3D(v.getX()-u.getX(),v.getY()-u.getY(),v.getZ()-u.getZ());
     }
     
     /**

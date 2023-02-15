@@ -11,8 +11,9 @@ public class Moves{
      * @param camera Camera
      */
     public static void up(Camera camera){
-        Vector3D position = camera.getPosition();       //"Get the position of the camera         
-        position.setY(position.getY() -1);              // and modify the choosen coordinate
+        Vector3D position = camera.getPosition();
+        Vector3D upDirection = camera.getUpOrientation();     //"Get the position of the camera         
+        position.add(upDirection.normalize());              // and modify the choosen coordinate
     }
 
     /**
@@ -21,17 +22,20 @@ public class Moves{
      */
     public static void down(Camera camera){
         Vector3D position = camera.getPosition();
-        position.setY(position.getY() +1);
+        Vector3D upDirection = camera.getUpOrientation();     //"Get the position of the camera         
+        position.sub(upDirection.normalize());              // and modify the choosen coordinate
     }    
 
     public static void left(Camera camera){
         Vector3D position = camera.getPosition();
-        position.setX(position.getX() -1);
+        Vector3D SideDirection = camera.getSideOrientation();     //"Get the position of the camera         
+        position.sub(SideDirection.normalize());   
     }
 
     public static void right(Camera camera){
         Vector3D position = camera.getPosition();
-        position.setX(position.getX() +1);
+        Vector3D SideDirection = camera.getSideOrientation();     //"Get the position of the camera         
+        position.add(SideDirection.normalize());  
     }
 
     public static void forward(Camera camera){
