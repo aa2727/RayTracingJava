@@ -40,25 +40,27 @@ public class Moves{
 
     public static void forward(Camera camera){
         Vector3D position = camera.getPosition();
-        position.setZ(position.getZ() -1);
+        position.add(camera.getOrientation().normalize()); 
     }
 
     public static void backward(Camera camera){
         Vector3D position = camera.getPosition();
-        position.setZ(position.getZ() +1);
+        position.sub(camera.getOrientation().normalize()); 
     }
 
     public static void roundLeft(Camera camera){
         Vector3D orientation = camera.getOrientation();
-        orientation.setX(orientation.getX() +1);
-        camera.setOrientation(orientation);                 //Replace the actual orientation by the given one
+        Vector3D SideDirection = camera.getSideOrientation(); 
+        orientation.add(SideDirection.normalize());
+        camera.setOrientation(orientation);               //Replace the actual orientation by the given one
     }
 
 
     public static void roundRight(Camera camera){
         Vector3D orientation = camera.getOrientation();
-        orientation.setX(orientation.getX() -1);
-        camera.setOrientation(orientation);
+        Vector3D SideDirection = camera.getSideOrientation(); 
+        orientation.sub(SideDirection.normalize());
+        camera.setOrientation(orientation);   
     }
 
 
