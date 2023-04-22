@@ -11,12 +11,14 @@ import java.io.IOException;
 public class MainPane extends JPanel{
 
     private JMenuBar menu;
-    private JMenu file;
+    private JMenu fileMenu;
     private JMenu help;
     private JMenuItem shortCuts;
     private JMenuItem open;
     private AfficheImage image;
     private Scene scene;
+    private AfficheImage imagePanel;
+    private GridBagConstraints gbc;
 
     public Scene getScene(){
         return this.scene;
@@ -31,38 +33,14 @@ public class MainPane extends JPanel{
         super();
         //The gridBagLayout is there to prevent the menu going on the side when the window is extended by user
         this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        
         //Creation of the menu, added to the panel later
-        this.menu=new JMenuBar();
-        this.file=new JMenu("Fichier");
-        this.help=new JMenu("Aide");
-        this.shortCuts=new JMenuItem("Raccourcis");
-        this.open=new JMenuItem("Ouvrir");
-
-        this.file.add(this.open);
-        this.help.add(this.shortCuts);
-        this.menu.add(this.file);
-        this.menu.add(this.help);
-
-
+        this.createMenu();
         //Just connecting the different class related to movements and menu options
-        this.addKeyListener(new KeyListenerClass(this));
-        this.addMouseWheelListener(new MouseWheelListenerClass(this));
-        this.shortCuts.addActionListener(new AideListener());
-        this.open.addActionListener(new FileOpener(this.open,this));
-
-
+        this.addAllListeners();
         //Instantiation of the panel containing the image 
-        AfficheImage imagePanel = new AfficheImage();
-        this.image = imagePanel;
+        this.setImage();
         // Setting the grids and adding the elements concerned in it
-        gbc.gridx=0;
-        gbc.gridy=0;
-        this.add(this.menu, gbc);
-        gbc.gridx=0;
-        gbc.gridy=1;
-        this.add(imagePanel, gbc);
+        this.displayPanel();
         //Make the panel focusable, key/mouseWheel listener works because of that
         setFocusable(true);     
     }
@@ -80,6 +58,45 @@ public class MainPane extends JPanel{
         
     }
 
+    /**
+     * Create the menu with the two buttons aide and ouvrir
+     */
+    private void createMenu() {
+
+        this.menu = new JMenuBar();
+        this.fileMenu = new JMenu("Fichier");
+        this.help = new JMenu("Aide");
+        this.shortCuts = new JMenuItem("Raccourcis");
+        this.open = new JMenuItem("Ouvrir");
+
+        this.fileMenu.add(this.open);
+        this.help.add(this.shortCuts);
+        this.menu.add(this.fileMenu);
+        this.menu.add(this.help);   
+    }
+
+    private void addAllListeners() {
+
+        this.addKeyListener(new KeyListenerClass(this));
+        this.addMouseWheelListener(new MouseWheelListenerClass(this));
+        this.shortCuts.addActionListener(new AideListener());
+        this.open.addActionListener(new FileOpener(this.open,this));
+    }
+
+    private void setImage() throws IOException {
+        this.imagePanel = new AfficheImage();
+        this.image = imagePanel;
+    }
+
+    private void displayPanel() {
+        this.gbc = new GridBagConstraints();
+        this.gbc.gridx=0;
+        this.gbc.gridy=0;
+        this.add(this.menu, gbc);
+        this.gbc.gridx=0;
+        this.gbc.gridy=1;
+        this.add(this.imagePanel, gbc);
+    }
 }
 
 
