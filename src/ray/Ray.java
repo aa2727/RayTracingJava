@@ -52,6 +52,23 @@ public class Ray {
         this(new Vector3D(xo, yo, zo), new Vector3D(xd, yd, zd));
     }
 
+        /**
+     * Construct a ray from the given origin and direction.
+     * 
+     * @param xo double x for origin
+     * @param yo double y for origin
+     * @param zo double z for origin
+     * @param xd double x for direction
+     * @param yd double y for direction
+     * @param zd double z for direction
+     * @ensure this.origin = new Vector3D(xo, yo, zo)
+     * @ensure this.direction = new Vector3D(xd, yd, zd)
+     */
+    public Ray(double xo, double yo, double zo, double xd, double yd, double zd) {
+        this(new Vector3D(xo, yo, zo), new Vector3D(xd, yd, zd));
+    }
+
+
     /**
      * Construct a ray from the given origin and direction.
      * 

@@ -14,6 +14,7 @@ FILE	=	src/*.java\
 			src/Scene/camera/*.java\
 			src/Parser/*.java\
 			src/Scene/*.java\
+			src/test/*.java
 
 all:
 	@echo "All..."
@@ -87,7 +88,7 @@ run_testCameraDiagonal:
 
 run_testTriangle:
 	@echo "Run TestTriangle"
-	@java -cp ./bin/ test.TestTriangle
+	@java -cp ./bin/ test.TestCalculPointImpact
 
 run:
 	@(java -cp bin Launcher)

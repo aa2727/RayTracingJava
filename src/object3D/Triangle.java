@@ -274,23 +274,21 @@ public class Triangle extends Material{
      */
     //https://fr.wikipedia.org/wiki/Ray_tracing
     public Vector3D calculPointIntersection(Ray r){
-        Vector3D Ot = Ray.vector(new Ray(getVertexA(),r.getOrigin()));
-        Vector3D vect_AB = Ray.vector(new Ray(getVertexA(),getVertexB()));
-        Vector3D vect_AC = Ray.vector(new Ray(getVertexA(),getVertexC()));
-        computePassageMatrix2Canonical(vect_AB, vect_AC, Ray.vector(r));
-        Vector3D Vp_Ot_v = Vector3D.vectorialProduct(Ot,vect_AC);
-        Vector3D Vp_Ot_u = Vector3D.vectorialProduct(vect_AB,Ot);
-        Vector3D n = Vector3D.vectorialProduct(vect_AB, vect_AC);
-        double divisor = Vector3D.scalarProduct(n, Ray.vector(r));
-        double x = -1*(Vector3D.scalarProduct(n, Ot)/divisor);
-        double y = Vector3D.scalarProduct(Vp_Ot_v, Ray.vector(r))/divisor;
-        double z = Vector3D.scalarProduct(Vp_Ot_u, Ray.vector(r))/divisor;
+        Vector3D E1 = Ray.vector(new Ray(getVertexA(),getVertexB()));
+        Vector3D E2 = Ray.vector(new Ray(getVertexA(),getVertexC()));
+        Vector3D N = Vector3D.vectorialProduct(E1,E2);
+        double det = -1*Vector3D.scalarProduct(r.getDirection(), N);
+        double invdet = 1/det;
+        Vector3D AO = Ray.vector(new Ray(getVertexA(),r.getOrigin()));
+        Vector3D DAO = Vector3D.vectorialProduct(AO, r.getDirection());
+        double u = Vector3D.scalarProduct(E2, DAO) * invdet;
+        double v = -1*Vector3D.scalarProduct(E1, DAO) * invdet;
+        double t = Vector3D.scalarProduct(AO, N) * invdet;
 
-        if ((y + z <= 1) && (x >= 0) && (y >= 0) && (y <= 1) && (z >= 0) && (z <= 1)){
-            Vector3D res = getCanonicalBaseVector3D(new Vector3D(y, z, x));
+        if ((u + v <= 1) && (t >= 0) && (u >= 0)&& (v >= 0) && (Math.abs(det) >= 0)){
+            Vector3D res = new Vector3D(0,0,0);
             res.add(r.getOrigin());
-            res.setX(res.getX()/2);
-            res.setY(res.getY()/2);
+            res.add(new Vector3D(t*r.getDirection().getX(), t*r.getDirection().getY(), t*r.getDirection().getZ()));
             return res; 
         }
         return null;
