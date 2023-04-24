@@ -272,7 +272,7 @@ public class Triangle extends Material{
      * @param r ray shoot from the camera
      * @return point of intersection between the ray and the triangle (the point may be incorrect)
      */
-    //https://fr.wikipedia.org/wiki/Ray_tracing
+    //https://stackoverflow.com/questions/42740765/intersection-between-line-and-triangle-in-3d
     public Vector3D calculPointIntersection(Ray r){
         Vector3D E1 = Ray.vector(new Ray(getVertexA(),getVertexB()));
         Vector3D E2 = Ray.vector(new Ray(getVertexA(),getVertexC()));
